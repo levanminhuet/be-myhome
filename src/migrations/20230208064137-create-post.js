@@ -1,67 +1,66 @@
-'use strict';
+"use strict";
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Posts', {
+    await queryInterface.createTable("Posts", {
       id: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.STRING,
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       star: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       labelCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       address: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       attributesId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       categoryCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       priceCoe: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       areaCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       provinceCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       userId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       overviewId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       imagesId: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       priceNumber: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       areaNumber: {
-        type: Sequelize.FLOAT
+        type: Sequelize.FLOAT,
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.DATE,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Posts');
-  }
+    await queryInterface.dropTable("Posts");
+  },
 };
