@@ -20,6 +20,12 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
+      facebook: {
+        type: Sequelize.STRING,
+      },
+      avatar: {
+        type: Sequelize.BLOB("long"),
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

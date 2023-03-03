@@ -8,7 +8,7 @@ import chothuephong from "./../data/room.json";
 import chothuenha from "./../data/house.json";
 import generateCode from "../ultis/generateCode";
 
-const databody = chothuecanho.body;
+const databody = chothuenha.body;
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
@@ -17,7 +17,7 @@ export const insertService = () =>
     try {
       databody.forEach(async (item) => {
         let postId = v4();
-        let labelCode = generateCode(4);
+        let labelCode = generateCode(item?.header?.class?.classType);
         let attributesId = v4();
         let userId = v4();
         let imagesId = v4();
@@ -30,7 +30,7 @@ export const insertService = () =>
           labelCode,
           address: item?.header.address,
           attributesId,
-          categoryCode: "CTCH",
+          categoryCode: "CTN",
           description: JSON.stringify(item?.mainContent?.content),
           userId,
           overviewId,
@@ -50,9 +50,12 @@ export const insertService = () =>
           image: JSON.stringify(item?.images),
         });
 
-        await db.Label.create({
-          code: labelCode,
-          value: item?.header?.class?.classType,
+        await db.Label.findOrCreate({
+          where: { code: labelCode },
+          default: {
+            code: labelCode,
+            value: item?.header?.class?.classType,
+          },
         });
 
         await db.Overview.create({

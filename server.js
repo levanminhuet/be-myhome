@@ -3,9 +3,9 @@ require("dotenv").config();
 import cors from "cors";
 import initRoutes from "./src/routes";
 import connectDb from "./src/config/connectDatabase";
-import generateCode from "./src/ultis/generateCode";
+// import generateCode from "./src/ultis/generateCode";
 
-console.log(generateCode(4));
+// console.log(generateCode(4));
 
 const app = express();
 app.use(
