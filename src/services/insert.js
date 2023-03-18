@@ -7,8 +7,10 @@ import chothuematbang from "./../data/ground.json";
 import chothuephong from "./../data/room.json";
 import chothuenha from "./../data/house.json";
 import generateCode from "../ultis/generateCode";
+import { dataPrice, dataArea } from "../ultis/data";
+import { getNumberFromString } from "../ultis/common";
 
-const databody = chothuenha.body;
+const databody = chothuecanho.body;
 const hashPassword = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
@@ -22,6 +24,10 @@ export const insertService = () =>
         let userId = v4();
         let imagesId = v4();
         let overviewId = v4();
+        let currentArea = getNumberFromString(
+          item?.header?.attributes?.acreage
+        );
+        let currentPrice = getNumberFromString(item?.header?.attributes?.price);
 
         await db.Post.create({
           id: postId,
@@ -35,6 +41,12 @@ export const insertService = () =>
           userId,
           overviewId,
           imagesId,
+          areaCode: dataArea.find(
+            (area) => area.max > currentArea && area.min <= currentArea
+          )?.code,
+          priceCode: dataPrice.find(
+            (area) => area.max > currentPrice && area.min <= currentPrice
+          )?.code,
         });
 
         await db.Attribute.create({
@@ -90,5 +102,28 @@ export const insertService = () =>
       resolve("Done.");
     } catch (error) {
       reject(error);
+    }
+  });
+
+export const createPricesAndAreas = () =>
+  new Promise((resolve, reject) => {
+    try {
+      dataPrice.forEach(async (item, index) => {
+        await db.Price.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+      dataArea.forEach(async (item, index) => {
+        await db.Area.create({
+          code: item.code,
+          value: item.value,
+          order: index + 1,
+        });
+      });
+      resolve("OK");
+    } catch (err) {
+      reject(err);
     }
   });
