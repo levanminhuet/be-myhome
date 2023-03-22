@@ -8,7 +8,7 @@ import chothuephong from "./../data/room.json";
 import chothuenha from "./../data/house.json";
 import generateCode from "../ultis/generateCode";
 import { dataPrice, dataArea } from "../ultis/data";
-import { getNumberFromString } from "../ultis/common";
+import { getNumberFromString, getNumberFromStringV2 } from "../ultis/common";
 
 const databody = chothuecanho.body;
 const hashPassword = (password) =>
@@ -17,9 +17,24 @@ const hashPassword = (password) =>
 export const insertService = () =>
   new Promise(async (resolve, reject) => {
     try {
+      const provinceCodes = [];
+      const labelCodes = [];
       databody.forEach(async (item) => {
         let postId = v4();
-        let labelCode = generateCode(item?.header?.class?.classType);
+        let labelCode = generateCode(item?.header?.class?.classType).trim();
+        labelCodes?.every((item) => item?.code !== labelCode) &&
+          labelCodes.push({
+            code: labelCode,
+            value: item?.header?.class?.classType?.trim(),
+          });
+        let provinceCode = generateCode(
+          item?.header?.address?.split(",")?.slice(-1)[0]
+        ).trim();
+        provinceCodes?.every((item) => item?.code !== provinceCode) &&
+          provinceCodes.push({
+            code: provinceCode,
+            value: item?.header?.address?.split(",")?.slice(-1)[0].trim(),
+          });
         let attributesId = v4();
         let userId = v4();
         let imagesId = v4();
@@ -47,6 +62,9 @@ export const insertService = () =>
           priceCode: dataPrice.find(
             (area) => area.max > currentPrice && area.min <= currentPrice
           )?.code,
+          priceNumber: getNumberFromStringV2(item?.header?.attributes?.price),
+          areaNumber: getNumberFromStringV2(item?.header?.attributes?.acreage),
+          provinceCode,
         });
 
         await db.Attribute.create({
@@ -62,13 +80,13 @@ export const insertService = () =>
           image: JSON.stringify(item?.images),
         });
 
-        await db.Label.findOrCreate({
-          where: { code: labelCode },
-          default: {
-            code: labelCode,
-            value: item?.header?.class?.classType,
-          },
-        });
+        // await db.Label.findOrCreate({
+        //   where: { code: labelCode },
+        //   default: {
+        //     code: labelCode,
+        //     value: item?.header?.class?.classType,
+        //   },
+        // });
 
         await db.Overview.create({
           id: overviewId,
@@ -98,6 +116,13 @@ export const insertService = () =>
             ?.content,
           zalo: item?.contact?.content.find((i) => i.name === "Zalo")?.content,
         });
+      });
+
+      provinceCodes?.forEach(async (item) => {
+        await db.Province.create(item);
+      });
+      labelCodes?.forEach(async (item) => {
+        await db.Label.create(item);
       });
       resolve("Done.");
     } catch (error) {
