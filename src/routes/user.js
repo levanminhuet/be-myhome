@@ -1,10 +1,10 @@
 import express from "express";
-import checkToken from "../middleware/checkToken";
 import * as userController from "../controllers/user";
+import verifyToken from "../middleware/verifyToken";
 
 const router = express.Router();
 
-router.use(checkToken);
+router.use(verifyToken);
 router.get("/get-current", userController.getCurrent);
 
 export default router;
