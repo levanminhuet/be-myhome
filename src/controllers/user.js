@@ -1,5 +1,6 @@
 import * as services from "../services/user";
-
+import asyncHandler from "express-async-handler";
+import db from "../models";
 export const getCurrent = async (req, res) => {
   const { id } = req.user;
   try {
@@ -12,3 +13,11 @@ export const getCurrent = async (req, res) => {
     });
   }
 };
+
+export const getRoles = asyncHandler(async (req, res) => {
+  const response = await db.Role.findAll();
+  return res.json({
+    success: response ? true : false,
+    roles: response ? response : "Cannot get roles",
+  });
+});

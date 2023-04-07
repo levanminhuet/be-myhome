@@ -2,14 +2,23 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Images", {
+    await queryInterface.createTable("Comments", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING,
       },
-      image: {
-        type: Sequelize.TEXT("long"),
+      uid: {
+        type: Sequelize.STRING,
+      },
+      pid: {
+        type: Sequelize.STRING,
+      },
+      parentComment: {
+        type: Sequelize.STRING,
+      },
+      content: {
+        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,
@@ -22,6 +31,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Images");
+    await queryInterface.dropTable("Comments");
   },
 };

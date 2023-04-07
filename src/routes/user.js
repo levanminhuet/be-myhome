@@ -1,10 +1,9 @@
 import express from "express";
 import * as userController from "../controllers/user";
-import verifyToken from "../middleware/verifyToken";
+import { verifyToken, isAdmin } from "../middleware/verifyToken";
 
 const router = express.Router();
 
-router.use(verifyToken);
-router.get("/get-current", userController.getCurrent);
-
+router.get("/get-current", verifyToken, userController.getCurrent);
+router.get('/roles', verifyToken, isAdmin, userController.getRoles)
 export default router;

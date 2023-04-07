@@ -1,57 +1,41 @@
 "use strict";
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Posts", {
+    await queryInterface.createTable("Users", {
       id: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.STRING,
       },
-      title: {
+      name: {
         type: Sequelize.STRING,
       },
-      star: {
+      password: {
         type: Sequelize.STRING,
       },
-      labelCode: {
+      role: {
+        type: Sequelize.STRING,
+        defaultValue: "R3",
+      },
+      phone: {
         type: Sequelize.STRING,
       },
-      address: {
+      zalo: {
         type: Sequelize.STRING,
       },
-      attributesId: {
+      fbUrl: {
         type: Sequelize.STRING,
       },
-      categoryCode: {
+      avatar: {
+        type: Sequelize.STRING,
+        defaultValue:
+          "https://www.nicepng.com/png/detail/115-1150821_default-avatar-comments-sign-in-icon-png.png",
+      },
+      resetPasswordToken: {
         type: Sequelize.STRING,
       },
-      priceCode: {
-        type: Sequelize.STRING,
-      },
-      areaCode: {
-        type: Sequelize.STRING,
-      },
-      provinceCode: {
-        type: Sequelize.STRING,
-      },
-      userId: {
-        type: Sequelize.STRING,
-      },
-      overviewId: {
-        type: Sequelize.STRING,
-      },
-      imagesId: {
-        type: Sequelize.STRING,
-      },
-      priceNumber: {
-        type: Sequelize.FLOAT,
-      },
-      areaNumber: {
-        type: Sequelize.FLOAT,
-      },
-      description: {
-        type: Sequelize.TEXT,
+      resetPasswordExpiry: {
+        type: Sequelize.DATE,
       },
       createdAt: {
         allowNull: false,
@@ -64,6 +48,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Posts");
+    await queryInterface.dropTable("Users");
   },
 };

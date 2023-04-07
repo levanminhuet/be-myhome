@@ -34,6 +34,26 @@ module.exports = (sequelize, DataTypes) => {
         targetKey: "code",
         as: "labelData",
       });
+      Post.hasMany(models.Expired, {
+        foreignKey: "pid",
+        targetKey: "id",
+        as: "expireds",
+      });
+      Post.hasMany(models.Vote, {
+        foreignKey: "pid",
+        targetKey: "id",
+        as: "votes",
+      });
+      Post.hasMany(models.Comment, {
+        foreignKey: "pid",
+        targetKey: "id",
+        as: "comments",
+      });
+      Post.hasMany(models.Wishlist, {
+        foreignKey: "pid",
+        targetKey: "id",
+        as: "lovers",
+      });
     }
   }
   Post.init(
@@ -47,12 +67,19 @@ module.exports = (sequelize, DataTypes) => {
       priceCode: DataTypes.STRING,
       areaCode: DataTypes.STRING,
       provinceCode: DataTypes.STRING,
+      description: {
+        type: DataTypes.TEXT,
+        get() {
+          const raw = this.getDataValue("description");
+          return raw ? JSON.parse(raw) : null;
+        },
+      },
       userId: DataTypes.STRING,
       overviewId: DataTypes.STRING,
       imagesId: DataTypes.STRING,
-      description: DataTypes.TEXT,
       priceNumber: DataTypes.FLOAT,
       areaNumber: DataTypes.FLOAT,
+      expired: DataTypes.DATE,
     },
     {
       sequelize,

@@ -6,6 +6,7 @@ import priceRouter from "./price";
 import areaRouter from "./area";
 import provinceRouter from "./province";
 import userRouter from "./user";
+import { notFound, errorHandler } from "../middleware/errHandler";
 
 const initRoutes = (app) => {
   app.use("/api/v1/auth", autRouter);
@@ -16,9 +17,9 @@ const initRoutes = (app) => {
   app.use("/api/v1/area", areaRouter);
   app.use("/api/v1/province", provinceRouter);
   app.use("/api/v1/user", userRouter);
-  return app.use("/", (req, res) => {
-    res.send("server on ...");
-  });
+
+  app.use(notFound);
+  app.use(errorHandler);
 };
 
 export default initRoutes;
