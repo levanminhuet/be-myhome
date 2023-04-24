@@ -2,10 +2,7 @@ import express from "express";
 require("dotenv").config();
 import cors from "cors";
 import initRoutes from "./src/routes";
-import connectDb from "./src/config/connectDatabase";
-// import generateCode from "./src/ultis/generateCode";
-
-// console.log(generateCode(4));
+import connectDatabase from "./src/config/connectDatabase";
 
 const app = express();
 app.use(
@@ -14,11 +11,11 @@ app.use(
     methods: ["POST", "GET", "PUT", "DELETE"],
   })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 initRoutes(app);
-connectDb();
+connectDatabase();
 
 const port = process.env.PORT || 8888;
 const listener = app.listen(port, () => {

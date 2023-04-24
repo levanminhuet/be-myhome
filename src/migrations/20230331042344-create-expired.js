@@ -1,40 +1,40 @@
-"use strict";
+'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Expireds", {
+    await queryInterface.createTable('Expireds', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       pid: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       uid: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING
       },
       price: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       days: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       status: {
-        type: Sequelize.ENUM("Pending", "Accepted", "Cancelled"),
-        defaultValue: "Pending",
+        type: Sequelize.ENUM('Pending', 'Accepted', 'Cancelled'),
+        defaultValue: 'Pending'
       },
       createdAt: {
         allowNull: false,
-        type: Sequelize.DATE,
+        type: Sequelize.DATE
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE,
-      },
+        type: Sequelize.DATE
+      }
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Expireds");
-  },
+    await queryInterface.dropTable('Expireds');
+  }
 };

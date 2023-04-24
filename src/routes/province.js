@@ -1,8 +1,8 @@
-import express from "express";
-import * as controllers from "../controllers/province";
+import express from 'express'
+import * as controllers from '../controllers/province'
+// CRUD
+const router = express.Router()
 
-const router = express.Router();
+router.get('/all', controllers.getProvinces)
 
-router.get("/all", controllers.getProvinces);
-
-export default router;
+export default router

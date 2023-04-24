@@ -1,5 +1,8 @@
-"use strict";
-const { Model } = require("sequelize");
+'use strict';
+const {
+  Model
+} = require('sequelize');
+const crypto = require('crypto')
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     /**
@@ -9,34 +12,34 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Post, {
-        foreignKey: "userId",
-        targetKey: "id",
-        as: "posts",
-      });
-      User.belongsTo(models.Role, {
-        foreignKey: "role",
-        targetKey: "code",
-        as: "roleData",
-      });
+      User.hasMany(models.Post, { foreignKey: 'userId', targetKey: 'id', as: 'posts' })
+      User.belongsTo(models.Role, { foreignKey: 'role', targetKey: 'code', as: 'roleData' })
     }
   }
-  User.init(
-    {
-      name: DataTypes.STRING,
-      password: DataTypes.STRING,
-      role: DataTypes.STRING,
-      phone: DataTypes.STRING,
-      zalo: DataTypes.STRING,
-      fbUrl: DataTypes.STRING,
-      avatar: DataTypes.STRING,
-      resetPasswordToken: DataTypes.STRING,
-      resetPasswordExpiry: DataTypes.DATE,
+  User.init({
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.STRING,
+    role: DataTypes.STRING,
+    phone: DataTypes.STRING,
+    zalo: DataTypes.STRING,
+    fbUrl: DataTypes.STRING,
+    avatar: DataTypes.STRING,
+    resetPasswordToken: {
+      type: DataTypes.STRING,
+      set(value) {
+        if (!value) {
+          this.setDataValue('resetPasswordToken', '')
+        } else {
+          const hashedToken = crypto.createHash('sha256').update(value).digest('hex')
+          this.setDataValue('resetPasswordToken', hashedToken)
+        }
+      }
     },
-    {
-      sequelize,
-      modelName: "User",
-    }
-  );
+    resetPasswordExpiry: DataTypes.DATE,
+  }, {
+    sequelize,
+    modelName: 'User',
+  });
   return User;
 };

@@ -1,22 +1,21 @@
 'use strict';
+/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Reports', {
+    await queryInterface.createTable('Visiteds', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      pid: {
-        type: Sequelize.STRING
+      times: {
+        type: Sequelize.INTEGER,
+        defaultValue: 1
       },
-      reason: {
-        type: Sequelize.STRING
-      },
-      status: {
-        type: Sequelize.ENUM('Accepted', 'Pending', 'Canceled'),
-        defaultValue: 'Pending'
+      uid: {
+        type: Sequelize.STRING,
+        defaultValue: 'anon'
       },
       createdAt: {
         allowNull: false,
@@ -29,6 +28,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Reports');
+    await queryInterface.dropTable('Visiteds');
   }
 };

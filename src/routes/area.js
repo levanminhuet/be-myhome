@@ -1,8 +1,8 @@
-import express from "express";
-import * as controllers from "../controllers/area";
+import express from 'express'
+import * as controllers from '../controllers/area'
+// CRUD
+const router = express.Router()
 
-const router = express.Router();
+router.get('/all', controllers.getAreas)
 
-router.get("/all", controllers.getAreas);
-
-export default router;
+export default router
